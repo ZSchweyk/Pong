@@ -1,5 +1,7 @@
 
 import os
+import time
+
 os.environ['KIVY_WINDOW'] = 'sdl2'
 
 from kivy.app import App
@@ -48,6 +50,7 @@ class PongGame(Widget):
         self._keyboard = None
 
     def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
+        # add arrow key functionality "up" and "down"
         if keycode[1] == "escape":
             sys.exit(0)
 
@@ -70,9 +73,11 @@ class PongGame(Widget):
         if self.ball.x < self.x:
             self.player2.score += 1
             self.serve_ball(vel=(4, 0))
+            time.sleep(.75)
         if self.ball.x > self.width:
             self.player1.score += 1
             self.serve_ball(vel=(-4, 0))
+            time.sleep(.75)
 
     def on_touch_move(self, touch):
         if touch.x < self.width / 3:
