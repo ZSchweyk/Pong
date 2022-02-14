@@ -19,11 +19,11 @@ class PongPaddle(Widget):
 
     def bounce_ball(self, ball):
         if self.collide_widget(ball):
-            vx, vy = ball.velocity
-            offset = (ball.center_y - self.center_y) / (self.height / 2)
-            bounced = Vector(-1 * vx, vy)
-            vel = bounced * 1.1
-            ball.velocity = vel.x, vel.y + offset
+            vx, vy = ball.velocity  # x and y components of the ball's velocity
+            offset = (ball.center_y - self.center_y) / (self.height / 2)  # ball's offset relative to center of paddle
+            bounced = Vector(-1 * vx, vy)  # a Vector representing the initial speed of the ball after bounced
+            vel = bounced * 1.1  # increases the x and y components of the ball's velocity by a factor of 10%
+            ball.velocity = vel.x, vel.y + offset  # sets the ball's new velocity, accounting for the offset
 
 
 class PongBall(Widget):
@@ -51,8 +51,18 @@ class PongGame(Widget):
 
     def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
         # add arrow key functionality "up" and "down"
+        increment = self.height / 50
         if keycode[1] == "escape":
             sys.exit(0)
+        elif keycode[1] == "u":
+            self.player1.center_y += increment
+        elif keycode[1] == "d":
+            self.player1.center_y -= increment
+        elif keycode[1] == "up":
+            self.player2.center_y += increment
+        elif keycode[1] == "down":
+            self.player2.center_y -= increment
+
 
     def serve_ball(self, vel=(4, 0)):
         self.ball.center = self.center
@@ -90,7 +100,7 @@ class PongApp(App):
     def build(self):
         game = PongGame()
         game.serve_ball()
-        Clock.schedule_interval(game.update, 1.0 / 600.0)
+        Clock.schedule_interval(game.update, 1 / 600)
         return game
 
 
