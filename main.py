@@ -1,4 +1,3 @@
-
 import os
 import time
 
@@ -7,8 +6,7 @@ os.environ['KIVY_WINDOW'] = 'sdl2'
 from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.core.window import Window
-from kivy.properties import NumericProperty, ReferenceListProperty, \
-    ObjectProperty
+from kivy.properties import NumericProperty, ReferenceListProperty, ObjectProperty
 from kivy.vector import Vector
 from kivy.clock import Clock
 import sys
@@ -54,14 +52,15 @@ class PongGame(Widget):
         increment = self.height / 50
         if keycode[1] == "escape":
             sys.exit(0)
-        elif keycode[1] == "u":
-            self.player1.center_y += increment
-        elif keycode[1] == "d":
-            self.player1.center_y -= increment
-        elif keycode[1] == "up":
-            self.player2.center_y += increment
+        if self.ball.velocity[0] > 0:
+            player = self.player2
+        else:
+            player = self.player1
+
+        if keycode[1] == "up":
+            player.center_y += increment
         elif keycode[1] == "down":
-            self.player2.center_y -= increment
+            player.center_y -= increment
 
 
     def serve_ball(self, vel=(4, 0)):
