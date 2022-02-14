@@ -10,6 +10,7 @@ from kivy.properties import NumericProperty, ReferenceListProperty, ObjectProper
 from kivy.vector import Vector
 from kivy.clock import Clock
 import sys
+from threading import Thread
 
 
 class PongPaddle(Widget):
@@ -20,8 +21,9 @@ class PongPaddle(Widget):
             vx, vy = ball.velocity  # x and y components of the ball's velocity
             offset = (ball.center_y - self.center_y) / (self.height / 2)  # ball's offset relative to center of paddle
             bounced = Vector(-1 * vx, vy)  # a Vector representing the initial speed of the ball after bounced
-            vel = bounced * 1.1  # increases the x and y components of the ball's velocity by a factor of 10%
-            ball.velocity = min(vel.x, 27), vel.y + offset  # sets the ball's new velocity, accounting for the offset
+            vel = bounced * 1.05  # increases the x and y components of the ball's velocity by a factor of 10%
+            ball.velocity = min(vel.x, 20) if vel.x > 0 else max(vel.x,
+                                                                 -20), vel.y + offset  # sets the ball's new velocity, accounting for the offset
             print(ball.velocity)
 
 
@@ -52,16 +54,15 @@ class PongGame(Widget):
         increment = self.height / 50
         if keycode[1] == "escape":
             sys.exit(0)
-        if self.ball.velocity[0] > 0:
-            player = self.player2
-        else:
-            player = self.player1
 
         if keycode[1] == "up":
-            player.center_y += increment
+            self.player2.center_y += increment
         elif keycode[1] == "down":
-            player.center_y -= increment
-
+            self.player2.center_y -= increment
+        elif keycode[1] == "a":
+            self.player1.center_y += increment
+        elif keycode[1] == "z":
+            self.player1.center_y -= increment
 
     def serve_ball(self, vel=(4, 0)):
         self.ball.center = self.center
@@ -100,11 +101,10 @@ class PongGame(Widget):
 class PongApp(App):
     def build(self):
         game = PongGame()
-        game.serve_ball()
+        # game.serve_ball()
         Clock.schedule_interval(game.update, 1 / 600)
         return game
 
 
 if __name__ == '__main__':
     PongApp().run()
-
