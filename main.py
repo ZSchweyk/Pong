@@ -50,7 +50,6 @@ class PongGame(Widget):
         self._keyboard = None
 
     def _on_keyboard_down(self, keyboard, keycode, text, modifiers):
-        # add arrow key functionality "up" and "down"
         increment = self.height / 50
         if keycode[1] == "escape":
             sys.exit(0)
@@ -83,10 +82,12 @@ class PongGame(Widget):
         if self.ball.x < self.x:
             self.player2.score += 1
             self.serve_ball(vel=(4, 0))
+            self.player1.center_y = self.player2.center_y = self.height / 2
             time.sleep(.75)
         if self.ball.x > self.width:
             self.player1.score += 1
             self.serve_ball(vel=(-4, 0))
+            self.player1.center_y = self.player2.center_y = self.height / 2
             time.sleep(.75)
 
     def on_touch_move(self, touch):
