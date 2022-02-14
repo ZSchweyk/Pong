@@ -23,7 +23,8 @@ class PongPaddle(Widget):
             offset = (ball.center_y - self.center_y) / (self.height / 2)  # ball's offset relative to center of paddle
             bounced = Vector(-1 * vx, vy)  # a Vector representing the initial speed of the ball after bounced
             vel = bounced * 1.1  # increases the x and y components of the ball's velocity by a factor of 10%
-            ball.velocity = vel.x, vel.y + offset  # sets the ball's new velocity, accounting for the offset
+            ball.velocity = min(vel.x, 27), vel.y + offset  # sets the ball's new velocity, accounting for the offset
+            print(ball.velocity)
 
 
 class PongBall(Widget):
@@ -91,9 +92,9 @@ class PongGame(Widget):
             time.sleep(.75)
 
     def on_touch_move(self, touch):
-        if touch.x < self.width / 3:
+        if touch.x < self.width / 2:
             self.player1.center_y = touch.y
-        if touch.x > self.width - self.width / 3:
+        if touch.x > self.width - self.width / 2:
             self.player2.center_y = touch.y
 
 
