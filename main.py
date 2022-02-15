@@ -23,7 +23,8 @@ class PongPaddle(Widget):
             offset = (ball.center_y - self.center_y) / (self.height / 2)  # ball's offset relative to center of paddle
             bounced = Vector(-1 * vx, vy)  # a Vector representing the initial speed of the ball after bounced
             vel = bounced * 1.05  # increases the x and y components of the ball's velocity by a factor of 10%
-            ball.velocity = min(vel.x, 20) if vel.x > 0 else max(vel.x, -20), vel.y + offset  # sets the ball's new velocity, accounting for the offset
+            ball.velocity = min(vel.x, 20) if vel.x > 0 else max(vel.x,
+                                                                 -20), vel.y + offset  # sets the ball's new velocity, accounting for the offset
 
 
 class PongBall(Widget):
@@ -82,12 +83,12 @@ class PongGame(Widget):
         # went of to a side to score point?
         if self.ball.x < self.x:
             self.player2.score += 1
-            self.serve_ball(vel=(4, random.randint(-1, 1)))
+            self.serve_ball(vel=(4, 0))
             self.player1.center_y = self.player2.center_y = self.height / 2
             time.sleep(.75)
         if self.ball.x > self.width:
             self.player1.score += 1
-            self.serve_ball(vel=(-4, random.randint(-1, 1)))
+            self.serve_ball(vel=(-4, 0))
             self.player1.center_y = self.player2.center_y = self.height / 2
             time.sleep(.75)
 
@@ -104,6 +105,7 @@ class PongApp(App):
         game.serve_ball()
         Clock.schedule_interval(game.update, 1 / 600)
         return game
+
 
 if __name__ == '__main__':
     PongApp().run()
